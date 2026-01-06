@@ -3,12 +3,22 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from config import DATABASE_URL
+import os
 
-# Create database engine
-engine = create_engine(
-    DATABASE_URL,
-    connect_args={"check_same_thread": False} if "sqlite" in DATABASE_URL else {}
-)
+# Create database engine with connection pooling for PostgreSQL
+if "postgres" in DATABASE_URL.lower() or "postgresql" in DATABASE_URL.lower():
+    # PostgreSQL connection with pool settings
+    engine = create_engine(
+        DATABASE_URL,
+        pool_pre_ping=True,  # Verify connections before using
+        pool_recycle=300,    # Recycle connections after 5 minutes
+    )
+else:
+    # SQLite connection
+    engine = create_engine(
+        DATABASE_URL,
+        connect_args={"check_same_thread": False}
+    )
 
 # Create session factory
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)

@@ -6,9 +6,6 @@ from config import FRONTEND_URL, DEBUG
 from api.v1.routes import router
 from database.init_db import init_db
 
-# Initialize database
-init_db()
-
 # Create FastAPI app
 app = FastAPI(
     title="OpenGenViz API",
@@ -28,6 +25,17 @@ app.add_middleware(
 
 # Include API routes
 app.include_router(router)
+
+
+@app.on_event("startup")
+async def startup_event():
+    """Initialize database on startup."""
+    try:
+        init_db()
+    except Exception as e:
+        print(f"Warning: Database initialization failed: {e}")
+        print("The app will continue, but database operations may fail.")
+        print("Please ensure DATABASE_URL is set correctly in environment variables.")
 
 
 @app.get("/")
