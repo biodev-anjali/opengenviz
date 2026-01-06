@@ -449,5 +449,3 @@ sequenceDiagram
 - Integration: End-to-end workflow (fetch → analyze → visualize → history)
 
 ## Deployment Readiness
-
-- Environment-based configuration
