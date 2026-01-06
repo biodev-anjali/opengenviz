@@ -14,10 +14,10 @@ app = FastAPI(
     debug=DEBUG
 )
 
-# Configure CORS
+# Configure CORS - allow all origins for now (can restrict later)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[FRONTEND_URL, "http://localhost:5173", "http://localhost:3000"],
+    allow_origins=["*"],  # Allow all origins for deployment
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

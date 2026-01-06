@@ -77,7 +77,12 @@ async def upload_sequence(
     except HTTPException:
         raise
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error processing upload: {str(e)}")
+        import traceback
+        error_detail = str(e)
+        traceback_str = traceback.format_exc()
+        print(f"Upload error: {error_detail}")
+        print(f"Traceback: {traceback_str}")
+        raise HTTPException(status_code=500, detail=f"Error processing upload: {error_detail}")
 
 
 @router.post("/fetch-sequence", response_model=AnalysisResponse)
@@ -139,7 +144,12 @@ async def fetch_and_analyze_sequence(
     except HTTPException:
         raise
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error fetching sequence: {str(e)}")
+        import traceback
+        error_detail = str(e)
+        traceback_str = traceback.format_exc()
+        print(f"Fetch sequence error: {error_detail}")
+        print(f"Traceback: {traceback_str}")
+        raise HTTPException(status_code=500, detail=f"Error fetching sequence: {error_detail}")
 
 
 @router.post("/analyze", response_model=AnalysisResponse)
