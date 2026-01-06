@@ -15,6 +15,24 @@ DATABASE_URL = os.getenv(
     f"sqlite:///{BASE_DIR / 'genomic_analysis.db'}"
 )
 
+# Log database URL (without password) for debugging
+if DATABASE_URL and "postgres" in DATABASE_URL.lower():
+    # Mask password in URL for logging
+    try:
+        from urllib.parse import urlparse, urlunparse
+        parsed = urlparse(DATABASE_URL)
+        if parsed.password:
+            masked_url = urlunparse(parsed._replace(netloc=f"{parsed.username}:****@{parsed.hostname}:{parsed.port or 5432}"))
+            print(f"Database URL configured: {masked_url}")
+        else:
+            print(f"Database URL configured: {parsed.scheme}://{parsed.hostname}:{parsed.port or 5432}{parsed.path}")
+    except Exception:
+        print(f"Database URL configured (masked)")
+elif "sqlite" in DATABASE_URL.lower():
+    print(f"Using SQLite database: {DATABASE_URL}")
+else:
+    print(f"Database URL type: {DATABASE_URL.split('://')[0] if '://' in DATABASE_URL else 'unknown'}")
+
 # API configuration
 API_HOST = os.getenv("API_HOST", "0.0.0.0")
 API_PORT = int(os.getenv("API_PORT", "8000"))

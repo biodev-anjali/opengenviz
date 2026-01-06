@@ -30,12 +30,20 @@ app.include_router(router)
 @app.on_event("startup")
 async def startup_event():
     """Initialize database on startup."""
+    import traceback
     try:
         init_db()
     except Exception as e:
-        print(f"Warning: Database initialization failed: {e}")
-        print("The app will continue, but database operations may fail.")
-        print("Please ensure DATABASE_URL is set correctly in environment variables.")
+        error_msg = str(e)
+        print(f"ERROR: Database initialization failed!")
+        print(f"Error: {error_msg}")
+        print(f"Traceback: {traceback.format_exc()}")
+        print("\nTroubleshooting:")
+        print("1. Check that DATABASE_URL is set in Render environment variables")
+        print("2. Verify the PostgreSQL instance is running")
+        print("3. Ensure the database hostname in DATABASE_URL is correct")
+        print("4. Check that web service and database are in the same region (use Internal URL)")
+        print("\nThe app will start, but database operations will fail until this is fixed.")
 
 
 @app.get("/")
@@ -53,6 +61,42 @@ async def root():
 async def health_check():
     """Health check endpoint."""
     return {"status": "healthy"}
+
+
+@app.get("/health/db")
+async def health_check_db():
+    """Database health check endpoint."""
+    from config import DATABASE_URL
+    from database.database import engine
+    from sqlalchemy import text
+    
+    try:
+        # Mask password in URL for response
+        from urllib.parse import urlparse, urlunparse
+        parsed = urlparse(DATABASE_URL)
+        if parsed.password:
+            masked_url = urlunparse(parsed._replace(netloc=f"{parsed.username}:****@{parsed.hostname}:{parsed.port or 5432}"))
+        else:
+            masked_url = DATABASE_URL
+        
+        # Test connection
+        with engine.connect() as conn:
+            result = conn.execute(text("SELECT 1"))
+            result.fetchone()
+        
+        return {
+            "status": "healthy",
+            "database": "connected",
+            "url_masked": masked_url,
+            "database_type": "postgresql" if "postgres" in DATABASE_URL.lower() else "sqlite"
+        }
+    except Exception as e:
+        return {
+            "status": "unhealthy",
+            "database": "disconnected",
+            "error": str(e),
+            "url_masked": masked_url if 'masked_url' in locals() else "unknown"
+        }
 
 
 if __name__ == "__main__":
