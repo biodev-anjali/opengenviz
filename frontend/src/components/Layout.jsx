@@ -8,7 +8,7 @@ const Layout = ({ children, showDisclaimer = true }) => {
   return (
     <div className="app">
       <header className="app-header">
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div className="header-content">
           <Link to="/" style={{ textDecoration: 'none', color: 'white' }}>
             <h1 className="app-title">OpenGenViz</h1>
           </Link>

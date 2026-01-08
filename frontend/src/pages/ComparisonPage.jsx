@@ -175,8 +175,8 @@ const ComparisonPage = () => {
 
                 <div className="panel">
                   <h3 className="panel-title">Mutation List</h3>
-                  <div style={{ maxHeight: '500px', overflowY: 'auto' }}>
-                    <table className="table">
+                  <div className="mutation-list-container">
+                    <table className="table mutation-table">
                       <thead>
                         <tr>
                           <th>Position</th>
@@ -194,8 +194,8 @@ const ComparisonPage = () => {
                                 {mutation.type}
                               </span>
                             </td>
-                            <td>{mutation.ref}</td>
-                            <td>{mutation.sample}</td>
+                            <td className="monospace-cell">{mutation.ref}</td>
+                            <td className="monospace-cell">{mutation.sample}</td>
                           </tr>
                         ))}
                       </tbody>

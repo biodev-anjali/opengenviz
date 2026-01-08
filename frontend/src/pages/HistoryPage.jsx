@@ -140,56 +140,106 @@ const HistoryPage = () => {
                   </div>
                 </div>
               ) : (
-                <div style={{ overflowX: 'auto' }}>
-                  <table className="table">
-                    <thead>
-                      <tr>
-                        <th>ID</th>
-                        <th>Type</th>
-                        <th>Length</th>
-                        <th>GC%</th>
-                        <th>Source</th>
-                        <th>Created</th>
-                        <th>Action</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {history.map((item) => (
-                        <tr key={item.id}>
-                          <td><strong>{item.id}</strong></td>
-                          <td>
+                <>
+                  {/* Desktop Table View */}
+                  <div className="history-table-container">
+                    <table className="table history-table">
+                      <thead>
+                        <tr>
+                          <th>ID</th>
+                          <th>Type</th>
+                          <th>Length</th>
+                          <th>GC%</th>
+                          <th>Source</th>
+                          <th>Created</th>
+                          <th>Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {history.map((item) => (
+                          <tr key={item.id}>
+                            <td><strong>{item.id}</strong></td>
+                            <td>
+                              <span className={`history-item-type ${item.sequence_type.toLowerCase()}`}>
+                                {item.sequence_type}
+                              </span>
+                            </td>
+                            <td>{item.sequence_length.toLocaleString()} bp</td>
+                            <td>
+                              {item.gc_percent !== null && item.gc_percent !== undefined
+                                ? `${item.gc_percent.toFixed(2)}%`
+                                : 'N/A'}
+                            </td>
+                            <td>
+                              {item.source_identifier || (
+                                <span style={{ color: '#999' }}>{item.source_type}</span>
+                              )}
+                            </td>
+                            <td style={{ fontSize: '0.85rem', color: '#666' }}>
+                              {new Date(item.created_at).toLocaleString()}
+                            </td>
+                            <td>
+                              <button
+                                className="btn btn-primary"
+                                onClick={() => handleSelect(item.id)}
+                                style={{ padding: '0.5rem 1rem', fontSize: '0.85rem' }}
+                              >
+                                View
+                              </button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+
+                  {/* Mobile Card View */}
+                  <div className="history-cards">
+                    {history.map((item) => (
+                      <div key={item.id} className="history-card">
+                        <div className="history-card-header">
+                          <div>
                             <span className={`history-item-type ${item.sequence_type.toLowerCase()}`}>
                               {item.sequence_type}
                             </span>
-                          </td>
-                          <td>{item.sequence_length.toLocaleString()} bp</td>
-                          <td>
-                            {item.gc_percent !== null && item.gc_percent !== undefined
-                              ? `${item.gc_percent.toFixed(2)}%`
-                              : 'N/A'}
-                          </td>
-                          <td>
-                            {item.source_identifier || (
-                              <span style={{ color: '#999' }}>{item.source_type}</span>
-                            )}
-                          </td>
-                          <td style={{ fontSize: '0.85rem', color: '#666' }}>
-                            {new Date(item.created_at).toLocaleString()}
-                          </td>
-                          <td>
-                            <button
-                              className="btn btn-primary"
-                              onClick={() => handleSelect(item.id)}
-                              style={{ padding: '0.5rem 1rem', fontSize: '0.85rem' }}
-                            >
-                              View
-                            </button>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
+                            <strong style={{ marginLeft: '0.5rem' }}>ID: {item.id}</strong>
+                          </div>
+                        </div>
+                        <div className="history-card-body">
+                          <div className="history-card-row">
+                            <span className="history-card-label">Length:</span>
+                            <span>{item.sequence_length.toLocaleString()} bp</span>
+                          </div>
+                          {item.gc_percent !== null && item.gc_percent !== undefined && (
+                            <div className="history-card-row">
+                              <span className="history-card-label">GC%:</span>
+                              <span>{item.gc_percent.toFixed(2)}%</span>
+                            </div>
+                          )}
+                          <div className="history-card-row">
+                            <span className="history-card-label">Source:</span>
+                            <span>{item.source_identifier || item.source_type}</span>
+                          </div>
+                          <div className="history-card-row">
+                            <span className="history-card-label">Created:</span>
+                            <span style={{ fontSize: '0.85rem', color: '#666' }}>
+                              {new Date(item.created_at).toLocaleString()}
+                            </span>
+                          </div>
+                        </div>
+                        <div className="history-card-footer">
+                          <button
+                            className="btn btn-primary"
+                            onClick={() => handleSelect(item.id)}
+                            style={{ width: '100%', padding: '0.75rem' }}
+                          >
+                            View Analysis
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </>
               )}
             </div>
           </div>

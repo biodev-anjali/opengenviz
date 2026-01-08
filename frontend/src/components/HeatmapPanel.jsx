@@ -139,12 +139,14 @@ const HeatmapPanel = ({ analysis, isMutationHeatmap = false }) => {
           : 'Visual representation of GC content density across the sequence. Each bin represents the average GC percentage for that region.'}
       </p>
       <div style={{ marginTop: '1rem' }}>
-        <canvas
-          ref={canvasRef}
-          width={800}
-          height={300}
-          style={{ width: '100%', maxWidth: '800px', height: '300px', border: '1px solid #e0e0e0', borderRadius: '4px', background: '#fafafa' }}
-        />
+        <div style={{ width: '100%', overflowX: 'auto', marginBottom: '0.5rem' }}>
+          <canvas
+            ref={canvasRef}
+            width={800}
+            height={300}
+            style={{ width: '100%', maxWidth: '800px', height: '300px', border: '1px solid #e0e0e0', borderRadius: '4px', background: '#fafafa', display: 'block' }}
+          />
+        </div>
         <div style={{ marginTop: '1rem', fontSize: '0.85rem', color: '#666' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginTop: '0.5rem' }}>
             <span style={{ fontWeight: 500 }}>Low</span>
