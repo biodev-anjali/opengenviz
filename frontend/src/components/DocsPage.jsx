@@ -1,20 +1,12 @@
 /** Documentation page component */
 import React from 'react'
-import { Link } from 'react-router-dom'
+import Layout from './Layout'
 
 const DocsPage = () => {
   return (
-    <div className="app">
-      <header className="app-header">
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <h1>OpenGenViz - Documentation</h1>
-          <Link to="/" style={{ color: 'white', textDecoration: 'none', padding: '0.5rem 1rem', background: 'rgba(255,255,255,0.2)', borderRadius: '4px' }}>
-            ← Back to Dashboard
-          </Link>
-        </div>
-      </header>
+    <Layout showDisclaimer={false}>
 
-      <div className="docs-container">
+      <div className="docs-container" style={{ marginTop: '1rem' }}>
         <div className="docs-content">
           {/* Overview Section */}
           <section className="docs-section">
@@ -421,7 +413,7 @@ MKTAYIAKQRQISFVKSHFSRQLEERLGLIEVQAPILSRVGDGTQDNLSGAEKAVQVKVKALPDAQFEVVHSLAKWKRQT
           </section>
         </div>
       </div>
-    </div>
+    </Layout>
   )
 }
 
