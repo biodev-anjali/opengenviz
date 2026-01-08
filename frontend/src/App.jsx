@@ -1,5 +1,6 @@
 /** Main application component */
 import React, { useState, useEffect } from 'react'
+import { Routes, Route, Link } from 'react-router-dom'
 import Disclaimer from './components/Disclaimer'
 import UploadPanel from './components/UploadPanel'
 import FetchPanel from './components/FetchPanel'
@@ -9,8 +10,9 @@ import HeatmapPanel from './components/HeatmapPanel'
 import SequenceComparison from './components/SequenceComparison'
 import HistoryPanel from './components/HistoryPanel'
 import HistoryDetail from './components/HistoryDetail'
+import DocsPage from './components/DocsPage'
 
-function App() {
+function Dashboard() {
   const [currentAnalysis, setCurrentAnalysis] = useState(null)
   const [currentComparison, setCurrentComparison] = useState(null)
   const [history, setHistory] = useState([])
@@ -73,7 +75,12 @@ function App() {
   return (
     <div className="app">
       <header className="app-header">
-        <h1>OpenGenViz - Genomic Analysis Platform</h1>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <h1>OpenGenViz - Genomic Analysis Platform</h1>
+          <Link to="/docs" style={{ color: 'white', textDecoration: 'none', padding: '0.5rem 1rem', background: 'rgba(255,255,255,0.2)', borderRadius: '4px', fontSize: '0.9rem' }}>
+            Documentation
+          </Link>
+        </div>
       </header>
       
       <Disclaimer />
@@ -219,6 +226,15 @@ function App() {
         </div>
       </div>
     </div>
+  )
+}
+
+function App() {
+  return (
+    <Routes>
+      <Route path="/" element={<Dashboard />} />
+      <Route path="/docs" element={<DocsPage />} />
+    </Routes>
   )
 }
 
