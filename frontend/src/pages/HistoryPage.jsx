@@ -10,6 +10,7 @@ const HistoryPage = () => {
   const [selectedAnalysis, setSelectedAnalysis] = useState(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
+  const [successMessage, setSuccessMessage] = useState(null)
 
   useEffect(() => {
     loadHistory()
@@ -35,8 +36,12 @@ const HistoryPage = () => {
     try {
       setLoading(true)
       setError(null)
+      setSuccessMessage(null)
       const analysis = await api.getHistoryDetail(analysisId)
       setSelectedAnalysis(analysis)
+      setSuccessMessage(`Analysis #${analysisId} loaded successfully`)
+      // Clear success message after 3 seconds
+      setTimeout(() => setSuccessMessage(null), 3000)
     } catch (err) {
       setError(err.userMessage || 'Error loading analysis')
     } finally {
@@ -60,6 +65,12 @@ const HistoryPage = () => {
           <button onClick={clearError} style={{ float: 'right', background: 'none', border: 'none', color: '#c33', cursor: 'pointer' }}>
             ×
           </button>
+        </div>
+      )}
+
+      {successMessage && (
+        <div className="success-message" style={{ margin: '0 2rem' }}>
+          ✓ {successMessage}
         </div>
       )}
 
