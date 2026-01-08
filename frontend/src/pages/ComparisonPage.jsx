@@ -220,9 +220,20 @@ const ComparisonPage = () => {
               </>
             ) : (
               <div className="panel">
-                <p style={{ textAlign: 'center', color: '#666', padding: '2rem' }}>
-                  Select reference and sample sequences to begin comparison.
-                </p>
+                <div className="empty-state">
+                  <div className="empty-state-icon">🔬</div>
+                  <h3 className="empty-state-title">Ready to Compare</h3>
+                  <p className="empty-state-description">
+                    Select a reference and sample sequence from your analysis history to detect mutations and variations.
+                  </p>
+                  {history.length === 0 && (
+                    <div className="empty-state-steps" style={{ marginTop: '1rem' }}>
+                      <p style={{ fontSize: '0.9rem', color: '#666', marginBottom: '0.5rem' }}>
+                        <strong>No sequences available yet.</strong> Go to the <strong>Analysis</strong> page to analyze sequences first.
+                      </p>
+                    </div>
+                  )}
+                </div>
               </div>
             )}
           </div>

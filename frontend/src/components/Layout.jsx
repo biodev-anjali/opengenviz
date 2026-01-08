@@ -1,5 +1,6 @@
 /** Shared layout component with header, navigation, and disclaimer */
 import React from 'react'
+import { Link } from 'react-router-dom'
 import Navigation from './Navigation'
 import Disclaimer from './Disclaimer'
 
@@ -8,7 +9,9 @@ const Layout = ({ children, showDisclaimer = true }) => {
     <div className="app">
       <header className="app-header">
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <h1>OpenGenViz - Genomic Analysis Platform</h1>
+          <Link to="/" style={{ textDecoration: 'none', color: 'white' }}>
+            <h1 className="app-title">OpenGenViz</h1>
+          </Link>
           <Navigation />
         </div>
       </header>

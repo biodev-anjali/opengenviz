@@ -143,10 +143,24 @@ const FetchPanel = ({ onAnalysisComplete, onError, setLoading }) => {
       <button
         className="btn btn-primary"
         onClick={handleFetch}
+        disabled={
+          (activeTab === 'ncbi_accession' && !ncbiAccession.trim()) ||
+          (activeTab === 'ncbi_gene' && (!geneName.trim() || !species.trim())) ||
+          (activeTab === 'embl' && !emblAccession.trim()) ||
+          (activeTab === 'url' && !url.trim())
+        }
         style={{ width: '100%' }}
       >
         Fetch and Analyze
       </button>
+      {((activeTab === 'ncbi_accession' && !ncbiAccession.trim()) ||
+        (activeTab === 'ncbi_gene' && (!geneName.trim() || !species.trim())) ||
+        (activeTab === 'embl' && !emblAccession.trim()) ||
+        (activeTab === 'url' && !url.trim())) && (
+        <p className="helper-text" style={{ marginTop: '0.5rem', fontSize: '0.85rem', color: '#666' }}>
+          Fill in the required fields to enable fetching
+        </p>
+      )}
     </div>
   )
 }

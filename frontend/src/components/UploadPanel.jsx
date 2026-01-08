@@ -93,6 +93,11 @@ const UploadPanel = ({ onAnalysisComplete, onError, setLoading }) => {
       >
         Upload and Analyze
       </button>
+      {!file && (
+        <p className="helper-text" style={{ marginTop: '0.5rem', fontSize: '0.85rem', color: '#666' }}>
+          Select a FASTA file to enable analysis
+        </p>
+      )}
     </div>
   )
 }

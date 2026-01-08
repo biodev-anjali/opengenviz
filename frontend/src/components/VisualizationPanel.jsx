@@ -37,10 +37,25 @@ const VisualizationPanel = ({ analysis }) => {
     plugins: {
       legend: {
         position: 'top',
+        labels: {
+          usePointStyle: true,
+          padding: 15,
+          font: {
+            size: 12,
+          },
+        },
       },
-      title: {
-        display: true,
-        text: '',
+      tooltip: {
+        enabled: true,
+        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+        padding: 12,
+        titleFont: {
+          size: 14,
+          weight: 'bold',
+        },
+        bodyFont: {
+          size: 12,
+        },
       },
     },
   }
@@ -50,17 +65,38 @@ const VisualizationPanel = ({ analysis }) => {
       <h2 className="panel-title">Visualizations</h2>
 
       {visualization_data.bar_chart && (
-        <div>
-          <h3 style={{ marginBottom: '0.5rem' }}>Nucleotide/Amino Acid Counts</h3>
+        <div style={{ marginBottom: '2rem' }}>
+          <h3 className="chart-title">Nucleotide/Amino Acid Counts</h3>
+          <p className="chart-caption">Distribution of nucleotides (DNA/RNA) or amino acids (Protein) in the sequence</p>
           <div className="chart-container">
             <Bar
               data={visualization_data.bar_chart}
               options={{
                 ...chartOptions,
-                plugins: {
-                  ...chartOptions.plugins,
-                  title: {
-                    display: false,
+                scales: {
+                  y: {
+                    beginAtZero: true,
+                    title: {
+                      display: true,
+                      text: 'Count',
+                      font: {
+                        size: 12,
+                        weight: 'bold',
+                      },
+                    },
+                    ticks: {
+                      precision: 0,
+                    },
+                  },
+                  x: {
+                    title: {
+                      display: true,
+                      text: sequence_type === 'Protein' ? 'Amino Acid' : 'Nucleotide',
+                      font: {
+                        size: 12,
+                        weight: 'bold',
+                      },
+                    },
                   },
                 },
               }}
@@ -70,22 +106,17 @@ const VisualizationPanel = ({ analysis }) => {
       )}
 
       {visualization_data.pie_chart && sequence_type !== 'Protein' && (
-        <div style={{ marginTop: '2rem' }}>
-          <h3 style={{ marginBottom: '0.5rem' }}>
+        <div style={{ marginTop: '2rem', marginBottom: '2rem' }}>
+          <h3 className="chart-title">
             {sequence_type === 'RNA' ? 'GC% vs AU%' : 'GC% vs AT%'}
           </h3>
-          <div className="chart-container">
+          <p className="chart-caption">
+            Composition ratio showing GC content versus AT (DNA) or AU (RNA) content
+          </p>
+          <div className="chart-container" style={{ maxWidth: '500px', margin: '0 auto' }}>
             <Pie
               data={visualization_data.pie_chart}
-              options={{
-                ...chartOptions,
-                plugins: {
-                  ...chartOptions.plugins,
-                  title: {
-                    display: false,
-                  },
-                },
-              }}
+              options={chartOptions}
             />
           </div>
         </div>
@@ -93,32 +124,43 @@ const VisualizationPanel = ({ analysis }) => {
 
       {visualization_data.line_chart && sequence_type !== 'Protein' && (
         <div style={{ marginTop: '2rem' }}>
-          <h3 style={{ marginBottom: '0.5rem' }}>Sliding Window GC% (window size: 50)</h3>
+          <h3 className="chart-title">Sliding Window GC% Analysis</h3>
+          <p className="chart-caption">GC content calculated across the sequence using a sliding window of 50 nucleotides</p>
           <div className="chart-container chart-container-large">
             <Line
               data={visualization_data.line_chart}
               options={{
                 ...chartOptions,
-                plugins: {
-                  ...chartOptions.plugins,
-                  title: {
-                    display: false,
-                  },
-                },
                 scales: {
                   x: {
                     title: {
                       display: true,
-                      text: 'Position',
+                      text: 'Position in Sequence',
+                      font: {
+                        size: 12,
+                        weight: 'bold',
+                      },
+                    },
+                    grid: {
+                      display: true,
+                      color: 'rgba(0, 0, 0, 0.05)',
                     },
                   },
                   y: {
                     title: {
                       display: true,
-                      text: 'GC%',
+                      text: 'GC Percentage (%)',
+                      font: {
+                        size: 12,
+                        weight: 'bold',
+                      },
                     },
                     min: 0,
                     max: 100,
+                    grid: {
+                      display: true,
+                      color: 'rgba(0, 0, 0, 0.05)',
+                    },
                   },
                 },
               }}

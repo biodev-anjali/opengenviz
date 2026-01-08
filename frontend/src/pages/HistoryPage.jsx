@@ -19,7 +19,11 @@ const HistoryPage = () => {
     try {
       setLoading(true)
       const data = await api.getHistory()
-      setHistory(data.analyses || [])
+      // Sort by newest first (most recent created_at)
+      const sorted = (data.analyses || []).sort((a, b) => 
+        new Date(b.created_at) - new Date(a.created_at)
+      )
+      setHistory(sorted)
     } catch (err) {
       setError(err.userMessage || 'Error loading history')
     } finally {
@@ -103,9 +107,27 @@ const HistoryPage = () => {
                   <div className="spinner"></div>
                 </div>
               ) : history.length === 0 ? (
-                <p style={{ textAlign: 'center', color: '#666', padding: '2rem' }}>
-                  No analysis history yet. Go to the <strong>Analysis</strong> page to analyze your first sequence.
-                </p>
+                <div className="empty-state">
+                  <div className="empty-state-icon">📚</div>
+                  <h3 className="empty-state-title">No Analysis History</h3>
+                  <p className="empty-state-description">
+                    Your previous analyses will appear here. Get started by analyzing your first sequence.
+                  </p>
+                  <div className="empty-state-steps">
+                    <div className="step-item">
+                      <span className="step-number">1</span>
+                      <span>Go to the <strong>Analysis</strong> page</span>
+                    </div>
+                    <div className="step-item">
+                      <span className="step-number">2</span>
+                      <span>Upload or fetch a sequence</span>
+                    </div>
+                    <div className="step-item">
+                      <span className="step-number">3</span>
+                      <span>View your analysis history here</span>
+                    </div>
+                  </div>
+                </div>
               ) : (
                 <div style={{ overflowX: 'auto' }}>
                   <table className="table">

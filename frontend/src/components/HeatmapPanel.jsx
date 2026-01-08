@@ -133,18 +133,23 @@ const HeatmapPanel = ({ analysis, isMutationHeatmap = false }) => {
       <h2 className="panel-title">
         {isMutationHeatmap ? 'Mutation Density Heatmap' : 'GC Density Heatmap'}
       </h2>
+      <p className="chart-caption" style={{ marginBottom: '1rem' }}>
+        {isMutationHeatmap
+          ? 'Visual representation of mutation density across the sequence. Each bin shows the number of mutations detected in that region.'
+          : 'Visual representation of GC content density across the sequence. Each bin represents the average GC percentage for that region.'}
+      </p>
       <div style={{ marginTop: '1rem' }}>
         <canvas
           ref={canvasRef}
           width={800}
           height={300}
-          style={{ width: '100%', maxWidth: '800px', height: '300px', border: '1px solid #ddd', borderRadius: '4px' }}
+          style={{ width: '100%', maxWidth: '800px', height: '300px', border: '1px solid #e0e0e0', borderRadius: '4px', background: '#fafafa' }}
         />
-        <div style={{ marginTop: '0.5rem', fontSize: '0.85rem', color: '#666' }}>
+        <div style={{ marginTop: '1rem', fontSize: '0.85rem', color: '#666' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginTop: '0.5rem' }}>
-            <span>Low</span>
-            <div style={{ flex: 1, height: '20px', background: 'linear-gradient(to right, #0000ff, #ffff00, #ff0000)', borderRadius: '4px' }}></div>
-            <span>High</span>
+            <span style={{ fontWeight: 500 }}>Low</span>
+            <div style={{ flex: 1, height: '20px', background: 'linear-gradient(to right, #0000ff, #ffff00, #ff0000)', borderRadius: '4px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}></div>
+            <span style={{ fontWeight: 500 }}>High</span>
           </div>
         </div>
       </div>

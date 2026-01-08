@@ -27,6 +27,45 @@ const DocsPage = () => {
               The platform automatically detects sequence types, computes composition metrics, generates 
               visualizations, and maintains a complete history of all analyses for reproducibility.
             </p>
+
+            <h3 className="docs-subheading">Workflow Overview</h3>
+            <div className="workflow-steps">
+              <div className="workflow-step">
+                <div className="workflow-step-number">1</div>
+                <div className="workflow-step-content">
+                  <strong>Input Sequence</strong>
+                  <p>Upload a FASTA file or fetch from public databases (NCBI, EMBL-ENA)</p>
+                </div>
+              </div>
+              <div className="workflow-step">
+                <div className="workflow-step-number">2</div>
+                <div className="workflow-step-content">
+                  <strong>Automatic Analysis</strong>
+                  <p>Sequence type detection, composition analysis, and metric calculation</p>
+                </div>
+              </div>
+              <div className="workflow-step">
+                <div className="workflow-step-number">3</div>
+                <div className="workflow-step-content">
+                  <strong>Visualization</strong>
+                  <p>Interactive charts and heatmaps showing sequence characteristics</p>
+                </div>
+              </div>
+              <div className="workflow-step">
+                <div className="workflow-step-number">4</div>
+                <div className="workflow-step-content">
+                  <strong>Comparison (Optional)</strong>
+                  <p>Compare sequences to detect mutations, insertions, and deletions</p>
+                </div>
+              </div>
+              <div className="workflow-step">
+                <div className="workflow-step-number">5</div>
+                <div className="workflow-step-content">
+                  <strong>History & Reproducibility</strong>
+                  <p>All analyses are saved with full metadata for replay and sharing</p>
+                </div>
+              </div>
+            </div>
           </section>
 
           {/* How to Use Section */}
@@ -310,22 +349,55 @@ const DocsPage = () => {
               <li>Fetch sequences using EMBL/ENA accession numbers</li>
               <li>REST API integration</li>
               <li>Supports all EMBL and ENA sequence records</li>
+              <li><strong>Website:</strong> <a href="https://www.ebi.ac.uk/ena" target="_blank" rel="noopener noreferrer">www.ebi.ac.uk/ena</a></li>
             </ul>
 
-            <h3 className="docs-subheading">Public Biological Databases</h3>
+            <h3 className="docs-subheading">DDBJ (DNA Data Bank of Japan)</h3>
             <p>
-              The platform can fetch from any publicly accessible FASTA URL:
+              Part of the INSDC (International Nucleotide Sequence Database Collaboration):
             </p>
             <ul className="docs-list">
-              <li>Direct URLs to FASTA files</li>
-              <li>Any web-accessible sequence file</li>
-              <li>Automatic format validation</li>
+              <li>Sequences from DDBJ are accessible through INSDC standards</li>
+              <li>All three databases (NCBI, EMBL-ENA, DDBJ) share data through INSDC</li>
+              <li>Accession numbers are interoperable across all three databases</li>
+              <li><strong>Website:</strong> <a href="https://www.ddbj.nig.ac.jp" target="_blank" rel="noopener noreferrer">www.ddbj.nig.ac.jp</a></li>
             </ul>
+
+            <div className="docs-warning" style={{ marginTop: '1.5rem' }}>
+              <strong>Note:</strong> All sequence data is fetched from public databases in real-time. 
+              The platform does not store sequence data from these databases; only analyses performed 
+              through the platform are saved to the history.
+            </div>
+          </section>
+
+          {/* Repository Section */}
+          <section className="docs-section">
+            <h2 className="docs-heading">7. Repository & Contributing</h2>
+            <p>
+              OpenGenViz is an open-source project designed for educational and research purposes.
+            </p>
+            <p>
+              <strong>GitHub Repository:</strong>{' '}
+              <a 
+                href="https://github.com/yourusername/opengenviz" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                style={{ color: '#3498db', textDecoration: 'none', fontWeight: 500 }}
+              >
+                github.com/yourusername/opengenviz
+              </a>
+            </p>
+            <p>
+              Contributions, bug reports, and feature requests are welcome. Please refer to the 
+              repository for contribution guidelines and code of conduct.
+            </p>
           </section>
 
           {/* Limitations Section */}
           <section className="docs-section">
-            <h2 className="docs-heading">7. Limitations</h2>
+            <h2 className="docs-heading">8. Limitations</h2>
+
+          {/* Limitations Section - Already exists, no change needed */}
             
             <div className="docs-warning" style={{ marginBottom: '1.5rem' }}>
               <strong>⚠️ Not for Medical Use:</strong> This platform is designed for educational and 

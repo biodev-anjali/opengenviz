@@ -76,9 +76,27 @@ const AnalysisPage = () => {
               </>
             ) : (
               <div className="panel">
-                <p style={{ textAlign: 'center', color: '#666', padding: '2rem' }}>
-                  Upload a FASTA file or fetch a sequence to begin analysis.
-                </p>
+                <div className="empty-state">
+                  <div className="empty-state-icon">🧬</div>
+                  <h3 className="empty-state-title">No Analysis Yet</h3>
+                  <p className="empty-state-description">
+                    Get started by uploading a FASTA file or fetching a sequence from a public database.
+                  </p>
+                  <div className="empty-state-steps">
+                    <div className="step-item">
+                      <span className="step-number">1</span>
+                      <span>Upload a local FASTA file or fetch from NCBI/EMBL</span>
+                    </div>
+                    <div className="step-item">
+                      <span className="step-number">2</span>
+                      <span>Wait for automatic sequence type detection</span>
+                    </div>
+                    <div className="step-item">
+                      <span className="step-number">3</span>
+                      <span>View analysis results and visualizations</span>
+                    </div>
+                  </div>
+                </div>
               </div>
             )}
           </div>
