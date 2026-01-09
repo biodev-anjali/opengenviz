@@ -6,6 +6,7 @@ import FetchPanel from '../components/FetchPanel'
 import AnalysisPanel from '../components/AnalysisPanel'
 import VisualizationPanel from '../components/VisualizationPanel'
 import HeatmapPanel from '../components/HeatmapPanel'
+import SkeletonLoader from '../components/SkeletonLoader'
 
 const AnalysisPage = () => {
   const [currentAnalysis, setCurrentAnalysis] = useState(null)
@@ -61,9 +62,11 @@ const AnalysisPage = () => {
 
           <div className="analysis-right">
             {loading && (
-              <div className="loading">
-                <div className="spinner"></div>
-              </div>
+              <>
+                <SkeletonLoader type="card" />
+                <SkeletonLoader type="chart" />
+                <SkeletonLoader type="chart" />
+              </>
             )}
 
             {currentAnalysis ? (
