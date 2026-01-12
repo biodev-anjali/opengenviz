@@ -31,9 +31,9 @@ const AnalysisPage = () => {
   return (
     <Layout>
       {error && (
-        <div className="error-message" style={{ margin: '0 2rem' }}>
+        <div className="error-message">
           {error}
-          <button onClick={clearError} style={{ float: 'right', background: 'none', border: 'none', color: '#c33', cursor: 'pointer' }}>
+          <button onClick={clearError} className="error-close-btn" aria-label="Close error">
             ×
           </button>
         </div>

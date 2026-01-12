@@ -65,7 +65,7 @@ const VisualizationPanel = ({ analysis }) => {
       <h2 className="panel-title">Visualizations</h2>
 
       {visualization_data.bar_chart && (
-        <div style={{ marginBottom: '2rem' }}>
+        <div className="chart-section">
           <h3 className="chart-title">Nucleotide/Amino Acid Counts</h3>
           <p className="chart-caption">Distribution of nucleotides (DNA/RNA) or amino acids (Protein) in the sequence</p>
           <div className="chart-container">
@@ -106,14 +106,14 @@ const VisualizationPanel = ({ analysis }) => {
       )}
 
       {visualization_data.pie_chart && sequence_type !== 'Protein' && (
-        <div style={{ marginTop: '2rem', marginBottom: '2rem' }}>
+        <div className="chart-section">
           <h3 className="chart-title">
             {sequence_type === 'RNA' ? 'GC% vs AU%' : 'GC% vs AT%'}
           </h3>
           <p className="chart-caption">
             Composition ratio showing GC content versus AT (DNA) or AU (RNA) content
           </p>
-          <div className="chart-container" style={{ maxWidth: '500px', margin: '0 auto' }}>
+          <div className="chart-container chart-container-pie">
             <Pie
               data={visualization_data.pie_chart}
               options={chartOptions}
@@ -123,7 +123,7 @@ const VisualizationPanel = ({ analysis }) => {
       )}
 
       {visualization_data.line_chart && sequence_type !== 'Protein' && (
-        <div style={{ marginTop: '2rem' }}>
+        <div className="chart-section">
           <h3 className="chart-title">Sliding Window GC% Analysis</h3>
           <p className="chart-caption">GC content calculated across the sequence using a sliding window of 50 nucleotides</p>
           <div className="chart-container chart-container-large">

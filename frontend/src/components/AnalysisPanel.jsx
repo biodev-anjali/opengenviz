@@ -36,7 +36,7 @@ const AnalysisPanel = ({ analysis }) => {
       </div>
 
       {source_identifier && (
-        <div style={{ marginTop: '1rem', padding: '0.75rem', background: '#f8f9fa', borderRadius: '4px' }}>
+        <div className="source-info">
           <strong>Source:</strong> {source_type === 'upload' ? 'File Upload' : 'Database Fetch'} - {source_identifier}
         </div>
       )}

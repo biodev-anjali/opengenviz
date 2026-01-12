@@ -23,22 +23,21 @@ const HistoryDetail = ({ analysis, onReanalyze }) => {
   return (
     <>
       <div className="panel">
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <h2 className="panel-title" style={{ margin: 0 }}>
+        <div className="history-detail-header">
+          <h2 className="panel-title">
             Analysis History - ID: {analysis.id}
           </h2>
           <button
-            className="btn btn-secondary"
+            className="btn btn-secondary btn-sm"
             onClick={onReanalyze}
-            style={{ padding: '0.5rem 1rem', fontSize: '0.85rem' }}
           >
             Close
           </button>
         </div>
-        <div style={{ marginTop: '1rem', padding: '0.75rem', background: '#f8f9fa', borderRadius: '4px' }}>
+        <div className="history-detail-meta">
           <div><strong>Created:</strong> {new Date(analysis.created_at).toLocaleString()}</div>
           {analysis.source_identifier && (
-            <div style={{ marginTop: '0.5rem' }}>
+            <div>
               <strong>Source:</strong> {analysis.source_identifier}
             </div>
           )}
@@ -53,19 +52,7 @@ const HistoryDetail = ({ analysis, onReanalyze }) => {
 
       <div className="panel">
         <h3 className="panel-title">Original FASTA</h3>
-        <pre
-          style={{
-            background: '#f8f9fa',
-            padding: '1rem',
-            borderRadius: '4px',
-            overflow: 'auto',
-            maxHeight: '400px',
-            fontSize: '0.85rem',
-            fontFamily: 'monospace',
-            whiteSpace: 'pre-wrap',
-            wordBreak: 'break-word',
-          }}
-        >
+        <pre className="fasta-preview">
           {analysis.original_fasta}
         </pre>
       </div>

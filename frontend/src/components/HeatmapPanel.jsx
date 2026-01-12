@@ -13,7 +13,9 @@ const HeatmapPanel = ({ analysis, isMutationHeatmap = false }) => {
     // Set canvas size based on container
     const container = canvas.parentElement
     if (container) {
-      canvas.width = Math.min(800, container.clientWidth - 20)
+      const containerWidth = container.clientWidth
+      const maxWidth = 800
+      canvas.width = Math.min(maxWidth, Math.max(300, containerWidth - 40))
       canvas.height = 300
     }
 
@@ -138,21 +140,19 @@ const HeatmapPanel = ({ analysis, isMutationHeatmap = false }) => {
           ? 'Visual representation of mutation density across the sequence. Each bin shows the number of mutations detected in that region.'
           : 'Visual representation of GC content density across the sequence. Each bin represents the average GC percentage for that region.'}
       </p>
-      <div style={{ marginTop: '1rem' }}>
-        <div style={{ width: '100%', overflowX: 'auto', marginBottom: '0.5rem' }}>
+      <div className="heatmap-wrapper">
+        <div className="heatmap-container">
           <canvas
             ref={canvasRef}
             width={800}
             height={300}
-            style={{ width: '100%', maxWidth: '800px', height: '300px', border: '1px solid #e0e0e0', borderRadius: '4px', background: '#fafafa', display: 'block' }}
+            className="heatmap-canvas"
           />
         </div>
-        <div style={{ marginTop: '1rem', fontSize: '0.85rem', color: '#666' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginTop: '0.5rem' }}>
-            <span style={{ fontWeight: 500 }}>Low</span>
-            <div style={{ flex: 1, height: '20px', background: 'linear-gradient(to right, #0000ff, #ffff00, #ff0000)', borderRadius: '4px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}></div>
-            <span style={{ fontWeight: 500 }}>High</span>
-          </div>
+        <div className="heatmap-legend">
+          <span className="heatmap-legend-label">Low</span>
+          <div className="heatmap-gradient"></div>
+          <span className="heatmap-legend-label">High</span>
         </div>
       </div>
     </div>

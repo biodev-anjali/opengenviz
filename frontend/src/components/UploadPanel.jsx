@@ -79,7 +79,7 @@ const UploadPanel = ({ onAnalysisComplete, onError, setLoading }) => {
         />
         <p>📁 Drag and drop a FASTA file here, or click to select</p>
         {file && (
-          <p style={{ marginTop: '0.5rem', color: '#3498db', fontWeight: 600 }}>
+          <p className="file-selected">
             Selected: {file.name}
           </p>
         )}
@@ -89,12 +89,11 @@ const UploadPanel = ({ onAnalysisComplete, onError, setLoading }) => {
         className="btn btn-primary"
         onClick={handleUpload}
         disabled={!file}
-        style={{ width: '100%', marginTop: '1rem' }}
       >
         Upload and Analyze
       </button>
       {!file && (
-        <p className="helper-text" style={{ marginTop: '0.5rem', fontSize: '0.85rem', color: '#666' }}>
+        <p className="helper-text">
           Select a FASTA file to enable analysis
         </p>
       )}

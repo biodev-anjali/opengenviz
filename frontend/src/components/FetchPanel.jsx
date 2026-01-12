@@ -149,7 +149,6 @@ const FetchPanel = ({ onAnalysisComplete, onError, setLoading }) => {
           (activeTab === 'embl' && !emblAccession.trim()) ||
           (activeTab === 'url' && !url.trim())
         }
-        style={{ width: '100%' }}
       >
         Fetch and Analyze
       </button>
@@ -157,7 +156,7 @@ const FetchPanel = ({ onAnalysisComplete, onError, setLoading }) => {
         (activeTab === 'ncbi_gene' && (!geneName.trim() || !species.trim())) ||
         (activeTab === 'embl' && !emblAccession.trim()) ||
         (activeTab === 'url' && !url.trim())) && (
-        <p className="helper-text" style={{ marginTop: '0.5rem', fontSize: '0.85rem', color: '#666' }}>
+        <p className="helper-text">
           Fill in the required fields to enable fetching
         </p>
       )}

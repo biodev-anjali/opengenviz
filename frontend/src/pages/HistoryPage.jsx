@@ -60,16 +60,16 @@ const HistoryPage = () => {
   return (
     <Layout>
       {error && (
-        <div className="error-message" style={{ margin: '0 2rem' }}>
+        <div className="error-message">
           {error}
-          <button onClick={clearError} style={{ float: 'right', background: 'none', border: 'none', color: '#c33', cursor: 'pointer' }}>
+          <button onClick={clearError} className="error-close-btn" aria-label="Close error">
             ×
           </button>
         </div>
       )}
 
       {successMessage && (
-        <div className="success-message" style={{ margin: '0 2rem' }}>
+        <div className="success-message">
           ✓ {successMessage}
         </div>
       )}
@@ -82,11 +82,10 @@ const HistoryPage = () => {
 
         {selectedAnalysis ? (
           <div className="history-detail-view">
-            <div style={{ marginBottom: '1rem' }}>
+            <div className="history-back-button">
               <button
                 className="btn btn-secondary"
                 onClick={handleBackToList}
-                style={{ padding: '0.5rem 1rem' }}
               >
                 ← Back to History List
               </button>
@@ -99,15 +98,14 @@ const HistoryPage = () => {
         ) : (
           <div className="history-list-view">
             <div className="panel">
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-                <h3 className="panel-title" style={{ margin: 0 }}>
+              <div className="history-header">
+                <h3 className="panel-title">
                   Previous Analyses ({history.length})
                 </h3>
                 <button
-                  className="btn btn-secondary"
+                  className="btn btn-secondary btn-sm"
                   onClick={loadHistory}
                   disabled={loading}
-                  style={{ padding: '0.5rem 1rem', fontSize: '0.85rem' }}
                 >
                   {loading ? 'Loading...' : 'Refresh'}
                 </button>
@@ -172,17 +170,16 @@ const HistoryPage = () => {
                             </td>
                             <td>
                               {item.source_identifier || (
-                                <span style={{ color: '#999' }}>{item.source_type}</span>
+                                <span className="table-muted">{item.source_type}</span>
                               )}
                             </td>
-                            <td style={{ fontSize: '0.85rem', color: '#666' }}>
+                            <td className="table-date">
                               {new Date(item.created_at).toLocaleString()}
                             </td>
                             <td>
                               <button
-                                className="btn btn-primary"
+                                className="btn btn-primary btn-sm"
                                 onClick={() => handleSelect(item.id)}
-                                style={{ padding: '0.5rem 1rem', fontSize: '0.85rem' }}
                               >
                                 View
                               </button>
@@ -222,7 +219,7 @@ const HistoryPage = () => {
                           </div>
                           <div className="history-card-row">
                             <span className="history-card-label">Created:</span>
-                            <span style={{ fontSize: '0.85rem', color: '#666' }}>
+                            <span className="history-card-date">
                               {new Date(item.created_at).toLocaleString()}
                             </span>
                           </div>
@@ -231,7 +228,6 @@ const HistoryPage = () => {
                           <button
                             className="btn btn-primary"
                             onClick={() => handleSelect(item.id)}
-                            style={{ width: '100%', padding: '0.75rem' }}
                           >
                             View Analysis
                           </button>

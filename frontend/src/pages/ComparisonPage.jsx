@@ -58,9 +58,9 @@ const ComparisonPage = () => {
   return (
     <Layout>
       {error && (
-        <div className="error-message" style={{ margin: '0 2rem' }}>
+        <div className="error-message">
           {error}
-          <button onClick={clearError} style={{ float: 'right', background: 'none', border: 'none', color: '#c33', cursor: 'pointer' }}>
+          <button onClick={clearError} className="error-close-btn" aria-label="Close error">
             ×
           </button>
         </div>
@@ -82,7 +82,6 @@ const ComparisonPage = () => {
                 <select
                   value={referenceId}
                   onChange={(e) => setReferenceId(e.target.value)}
-                  style={{ width: '100%', padding: '0.75rem' }}
                 >
                   <option value="">Select reference sequence...</option>
                   {history.map((item) => (
@@ -99,7 +98,6 @@ const ComparisonPage = () => {
                 <select
                   value={sampleId}
                   onChange={(e) => setSampleId(e.target.value)}
-                  style={{ width: '100%', padding: '0.75rem' }}
                 >
                   <option value="">Select sample sequence...</option>
                   {history.map((item) => (
@@ -115,12 +113,11 @@ const ComparisonPage = () => {
                 className="btn btn-primary"
                 onClick={handleCompare}
                 disabled={!referenceId || !sampleId || loading}
-                style={{ width: '100%', marginTop: '1rem' }}
               >
                 {loading ? 'Comparing...' : 'Compare Sequences'}
               </button>
 
-              <p style={{ marginTop: '1rem', fontSize: '0.85rem', color: '#666' }}>
+              <p className="helper-text">
                 Select two sequences from your analysis history to compare and detect mutations.
                 If you don't have sequences yet, go to the <strong>Analysis</strong> page to upload or fetch sequences first.
               </p>
@@ -159,9 +156,9 @@ const ComparisonPage = () => {
                   </div>
 
                   {currentComparison.alignment && (
-                    <div style={{ marginTop: '1.5rem' }}>
-                      <h3 style={{ marginBottom: '1rem' }}>Alignment Statistics</h3>
-                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1rem' }}>
+                    <div className="alignment-stats">
+                      <h3>Alignment Statistics</h3>
+                      <div className="alignment-stats-grid">
                         <div>
                           <strong>Alignment Score:</strong> {currentComparison.alignment.score?.toFixed(2) || 'N/A'}
                         </div>
