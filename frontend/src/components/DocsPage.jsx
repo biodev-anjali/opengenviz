@@ -6,7 +6,7 @@ const DocsPage = () => {
   return (
     <Layout showDisclaimer={false}>
 
-      <div className="docs-container" style={{ marginTop: '1rem' }}>
+      <div className="docs-container">
         <div className="docs-content">
           {/* Overview Section */}
           <section className="docs-section">
