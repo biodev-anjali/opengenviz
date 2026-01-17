@@ -41,10 +41,11 @@ const AnalysisPage = () => {
 
       <div className="page-container">
         <div className="page-header">
-          <h2 className="page-title">OpenGenViz</h2>
+          <h2 className="page-title">Sequence Analysis</h2>
           <p className="page-subtitle">
-            A web-based platform for genomics and bioinformatics researchers to analyze DNA, RNA, and protein sequences. 
-            No installation required. Automatic sequence type detection, interactive visualizations, and complete analysis history for reproducibility.
+            OpenGenViz is a web-based platform for genomics and bioinformatics researchers. 
+            Analyze DNA, RNA, and protein sequences without installing software or using command-line tools. 
+            All analyses are automatically saved with complete reproducibility.
           </p>
         </div>
 
@@ -84,24 +85,28 @@ const AnalysisPage = () => {
               <div className="panel">
                 <div className="empty-state">
                   <div className="empty-state-icon">🧬</div>
-                  <h3 className="empty-state-title">Get Started with Sequence Analysis</h3>
+                  <h3 className="empty-state-title">For Genomics and Bioinformatics Researchers</h3>
                   <p className="empty-state-description">
-                    OpenGenViz helps researchers analyze genomic sequences without command-line tools or complex software setup. 
-                    Upload your FASTA files or fetch sequences directly from NCBI and EMBL-ENA databases. 
-                    All analyses are automatically saved with full reproducibility.
+                    OpenGenViz solves the problem of accessing sequence analysis tools without command-line expertise or local software installation. 
+                    Unlike desktop tools that require setup, or command-line tools that need technical knowledge, this platform runs entirely in your browser.
+                  </p>
+                  <p className="empty-state-description" style={{ marginTop: '1rem' }}>
+                    <strong>What makes this different:</strong> Every analysis is automatically saved with full metadata. 
+                    You can replay any previous analysis, share results with exact reproducibility, and compare sequences 
+                    with integrated mutation detection—all without managing files or remembering command syntax.
                   </p>
                   <div className="empty-state-steps">
                     <div className="step-item">
                       <span className="step-number">1</span>
-                      <span>Upload a local FASTA file or fetch from NCBI/EMBL</span>
+                      <span>Upload a FASTA file or fetch from NCBI/EMBL databases</span>
                     </div>
                     <div className="step-item">
                       <span className="step-number">2</span>
-                      <span>Wait for automatic sequence type detection</span>
+                      <span>Automatic sequence type detection and analysis</span>
                     </div>
                     <div className="step-item">
                       <span className="step-number">3</span>
-                      <span>View analysis results and visualizations</span>
+                      <span>View results, visualizations, and access full analysis history</span>
                     </div>
                   </div>
                 </div>
