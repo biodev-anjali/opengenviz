@@ -41,8 +41,11 @@ const AnalysisPage = () => {
 
       <div className="page-container">
         <div className="page-header">
-          <h2 className="page-title">Sequence Analysis</h2>
-          <p className="page-subtitle">Upload a FASTA file or fetch from public databases to analyze DNA, RNA, or protein sequences</p>
+          <h2 className="page-title">OpenGenViz</h2>
+          <p className="page-subtitle">
+            A web-based platform for genomics and bioinformatics researchers to analyze DNA, RNA, and protein sequences. 
+            No installation required. Automatic sequence type detection, interactive visualizations, and complete analysis history for reproducibility.
+          </p>
         </div>
 
         <div className="analysis-layout">
@@ -81,9 +84,11 @@ const AnalysisPage = () => {
               <div className="panel">
                 <div className="empty-state">
                   <div className="empty-state-icon">🧬</div>
-                  <h3 className="empty-state-title">No Analysis Yet</h3>
+                  <h3 className="empty-state-title">Get Started with Sequence Analysis</h3>
                   <p className="empty-state-description">
-                    Get started by uploading a FASTA file or fetching a sequence from a public database.
+                    OpenGenViz helps researchers analyze genomic sequences without command-line tools or complex software setup. 
+                    Upload your FASTA files or fetch sequences directly from NCBI and EMBL-ENA databases. 
+                    All analyses are automatically saved with full reproducibility.
                   </p>
                   <div className="empty-state-steps">
                     <div className="step-item">
