@@ -14,27 +14,24 @@ const AnalysisPage = () => {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
 
-  // Load saved state on mount
-  useEffect(() => {
-    try {
-      const savedAnalysis = localStorage.getItem('opengenviz_current_analysis')
-      if (savedAnalysis) {
-        const analysis = JSON.parse(savedAnalysis)
-        setCurrentAnalysis(analysis)
-      }
-    } catch (e) {
-      console.log('Could not load saved analysis from localStorage:', e)
-    }
-  }, [])
-
-  // Auto-load sample dataset for first-time users
+  // Load saved state on mount and auto-load sample for first-time users
   useEffect(() => {
     const hasVisited = localStorage.getItem('opengenviz_has_visited')
-    
-    // Only load sample if no saved state and first visit
     const savedAnalysis = localStorage.getItem('opengenviz_current_analysis')
     
-    if (!hasVisited && !currentAnalysis && !savedAnalysis && !loading) {
+    // Restore saved state if available
+    if (savedAnalysis) {
+      try {
+        const analysis = JSON.parse(savedAnalysis)
+        setCurrentAnalysis(analysis)
+        return // Don't load sample if we have saved state
+      } catch (e) {
+        console.log('Could not load saved analysis from localStorage:', e)
+      }
+    }
+    
+    // Auto-load sample dataset for first-time users (only if no saved state)
+    if (!hasVisited && !savedAnalysis) {
       // Sample DNA sequence with good variation for visualizations
       const sampleFASTA = `>sample_dna_sequence
 ATGCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATGCGATCGATCGATCGATCGATCG
@@ -58,7 +55,8 @@ ATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCG`
       
       loadSample()
     }
-  }, [])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []) // Run once on mount only
 
   const handleAnalysisComplete = (analysis) => {
     setCurrentAnalysis(analysis)
