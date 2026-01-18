@@ -55,6 +55,9 @@ const FetchPanel = ({ onAnalysisComplete, onError, setLoading }) => {
   return (
     <div className="panel">
       <h2 className="panel-title">Fetch from Database</h2>
+      <p className="helper-text" style={{ marginBottom: '1rem', fontSize: '0.9rem', color: '#666' }}>
+        💡 Retrieve sequences from public databases (NCBI, EMBL) by accession number, gene name, or URL. No local file needed.
+      </p>
       
       <div className="tabs">
         <button

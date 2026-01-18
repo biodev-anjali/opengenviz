@@ -1,5 +1,5 @@
 /** Analysis page - main workflow for sequence analysis */
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Layout from '../components/Layout'
 import UploadPanel from '../components/UploadPanel'
 import FetchPanel from '../components/FetchPanel'
@@ -7,15 +7,68 @@ import AnalysisPanel from '../components/AnalysisPanel'
 import VisualizationPanel from '../components/VisualizationPanel'
 import HeatmapPanel from '../components/HeatmapPanel'
 import SkeletonLoader from '../components/SkeletonLoader'
+import { api } from '../api/client'
 
 const AnalysisPage = () => {
   const [currentAnalysis, setCurrentAnalysis] = useState(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
 
+  // Load saved state on mount
+  useEffect(() => {
+    try {
+      const savedAnalysis = localStorage.getItem('opengenviz_current_analysis')
+      if (savedAnalysis) {
+        const analysis = JSON.parse(savedAnalysis)
+        setCurrentAnalysis(analysis)
+      }
+    } catch (e) {
+      console.log('Could not load saved analysis from localStorage:', e)
+    }
+  }, [])
+
+  // Auto-load sample dataset for first-time users
+  useEffect(() => {
+    const hasVisited = localStorage.getItem('opengenviz_has_visited')
+    
+    // Only load sample if no saved state and first visit
+    const savedAnalysis = localStorage.getItem('opengenviz_current_analysis')
+    
+    if (!hasVisited && !currentAnalysis && !savedAnalysis && !loading) {
+      // Sample DNA sequence with good variation for visualizations
+      const sampleFASTA = `>sample_dna_sequence
+ATGCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATGCGATCGATCGATCGATCGATCG
+ATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCG
+ATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCG
+ATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCG`
+      
+      const loadSample = async () => {
+        try {
+          setLoading(true)
+          const result = await api.analyzeSequence(sampleFASTA)
+          setCurrentAnalysis(result)
+          localStorage.setItem('opengenviz_has_visited', 'true')
+        } catch (error) {
+          // Silently fail - user can still use the app normally
+          console.log('Could not load sample dataset:', error.userMessage || error.message)
+        } finally {
+          setLoading(false)
+        }
+      }
+      
+      loadSample()
+    }
+  }, [])
+
   const handleAnalysisComplete = (analysis) => {
     setCurrentAnalysis(analysis)
     setError(null)
+    // Save to localStorage for persistence
+    try {
+      localStorage.setItem('opengenviz_current_analysis', JSON.stringify(analysis))
+    } catch (e) {
+      console.log('Could not save analysis to localStorage:', e)
+    }
     // Note: History is automatically updated on backend, will be visible in History page
   }
 
@@ -43,9 +96,13 @@ const AnalysisPage = () => {
         <div className="page-header">
           <h2 className="page-title">Sequence Analysis</h2>
           <p className="page-subtitle">
-            OpenGenViz is a web-based platform for genomics and bioinformatics researchers. 
-            Analyze DNA, RNA, and protein sequences without installing software or using command-line tools. 
-            All analyses are automatically saved with complete reproducibility.
+            <strong>Who this is for:</strong> Bioinformatics and genomics researchers who need to analyze DNA, RNA, and protein sequences quickly without installing software or learning command-line tools.
+          </p>
+          <p className="page-subtitle" style={{ marginTop: '0.75rem' }}>
+            <strong>What problem this solves:</strong> Raw sequence databases (NCBI, EMBL) only provide sequences. Analyzing them requires specialized software, command-line expertise, and manual data management. OpenGenViz delivers analysis-ready visualizations and insights directly in your browser.
+          </p>
+          <p className="page-subtitle" style={{ marginTop: '0.75rem' }}>
+            <strong>Value over raw databases:</strong> Instead of downloading sequences and processing them locally, get instant composition analysis, GC-content trends, mutation detection, and publication-ready visualizations—all automatically saved with full reproducibility for research workflows.
           </p>
         </div>
 
@@ -85,28 +142,23 @@ const AnalysisPage = () => {
               <div className="panel">
                 <div className="empty-state">
                   <div className="empty-state-icon">🧬</div>
-                  <h3 className="empty-state-title">For Genomics and Bioinformatics Researchers</h3>
+                  <h3 className="empty-state-title">Get Started with Sequence Analysis</h3>
                   <p className="empty-state-description">
-                    OpenGenViz solves the problem of accessing sequence analysis tools without command-line expertise or local software installation. 
-                    Unlike desktop tools that require setup, or command-line tools that need technical knowledge, this platform runs entirely in your browser.
-                  </p>
-                  <p className="empty-state-description" style={{ marginTop: '1rem' }}>
-                    <strong>What makes this different:</strong> Every analysis is automatically saved with full metadata. 
-                    You can replay any previous analysis, share results with exact reproducibility, and compare sequences 
-                    with integrated mutation detection—all without managing files or remembering command syntax.
+                    Upload a FASTA file, CSV/TSV dataset, or fetch sequences from NCBI/EMBL databases. 
+                    OpenGenViz automatically detects sequence types and performs comprehensive analysis with interactive visualizations.
                   </p>
                   <div className="empty-state-steps">
                     <div className="step-item">
                       <span className="step-number">1</span>
-                      <span>Upload a FASTA file or fetch from NCBI/EMBL databases</span>
+                      <span>Upload a FASTA, CSV, or TSV file, or fetch from databases</span>
                     </div>
                     <div className="step-item">
                       <span className="step-number">2</span>
-                      <span>Automatic sequence type detection and analysis</span>
+                      <span>Automatic analysis with interactive visualizations</span>
                     </div>
                     <div className="step-item">
                       <span className="step-number">3</span>
-                      <span>View results, visualizations, and access full analysis history</span>
+                      <span>Export results, compare sequences, and access full history</span>
                     </div>
                   </div>
                 </div>

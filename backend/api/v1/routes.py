@@ -15,7 +15,7 @@ from services.history_service import (
     list_analyses,
     store_comparison
 )
-from utils.sequence_utils import parse_fasta, validate_fasta
+from utils.sequence_utils import parse_fasta, validate_fasta, validate_csv_tsv, parse_csv_tsv
 from api.v1.schemas import (
     SequenceFetchRequest,
     ComparisonRequest,
@@ -34,11 +34,24 @@ async def upload_sequence(
     file: UploadFile = File(...),
     db: Session = Depends(get_db)
 ):
-    """Upload and analyze FASTA file."""
+    """Upload and analyze FASTA, CSV, or TSV file."""
     try:
         # Read file content
         content = await file.read()
-        fasta_content = content.decode('utf-8')
+        file_content = content.decode('utf-8')
+        filename = file.filename or 'uploaded_file'
+        
+        # Detect file type and convert if needed
+        is_csv_tsv = filename.lower().endswith(('.csv', '.tsv'))
+        
+        if is_csv_tsv:
+            # Validate and convert CSV/TSV to FASTA
+            is_valid, result = validate_csv_tsv(file_content, filename)
+            if not is_valid:
+                raise HTTPException(status_code=400, detail=result or "Invalid CSV/TSV format")
+            fasta_content = result  # result contains the FASTA content
+        else:
+            fasta_content = file_content
         
         # Validate FASTA
         is_valid, error_msg = validate_fasta(fasta_content)

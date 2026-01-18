@@ -1,7 +1,9 @@
 """Sequence parsing, validation, and type detection utilities."""
 import re
 import hashlib
-from typing import Tuple, Optional
+import csv
+import io
+from typing import Tuple, Optional, List, Dict
 
 
 def parse_fasta(fasta_content: str) -> Tuple[Optional[str], str]:
@@ -149,4 +151,112 @@ def validate_fasta(fasta_content: str) -> Tuple[bool, Optional[str]]:
         return True, None
     except Exception as e:
         return False, str(e)
+
+
+def parse_csv_tsv(content: str, filename: str) -> Tuple[str, Optional[str]]:
+    """
+    Parse CSV/TSV file and convert to FASTA format.
+    
+    Args:
+        content: Raw CSV/TSV file content
+        filename: Original filename (used to detect TSV by extension)
+        
+    Returns:
+        Tuple of (fasta_content, error_message)
+    """
+    try:
+        # Detect delimiter: TSV if filename ends with .tsv or content has tabs, else CSV
+        is_tsv = filename.lower().endswith('.tsv') or '\t' in content.split('\n')[0]
+        delimiter = '\t' if is_tsv else ','
+        
+        # Read CSV/TSV
+        reader = csv.DictReader(io.StringIO(content), delimiter=delimiter)
+        
+        # Find sequence column (required) - try common names
+        rows = list(reader)
+        if not rows:
+            return None, "CSV/TSV file is empty or has no data rows"
+        
+        fieldnames = reader.fieldnames
+        if not fieldnames:
+            return None, "CSV/TSV file has no headers"
+        
+        # Find sequence column
+        sequence_col = None
+        for col_name in ['sequence', 'seq', 'Sequence', 'SEQ', 'SEQUENCE']:
+            if col_name in fieldnames:
+                sequence_col = col_name
+                break
+        
+        if not sequence_col:
+            return None, f"Required 'sequence' column not found. Available columns: {', '.join(fieldnames)}"
+        
+        # Find ID column (optional) - try common names
+        id_col = None
+        for col_name in ['id', 'ID', 'Id', 'name', 'Name', 'NAME', 'sequence_id', 'sequence_ID', 'identifier', 'Identifier']:
+            if col_name in fieldnames:
+                id_col = col_name
+                break
+        
+        # Convert to FASTA format (use first row or concatenate all)
+        fasta_lines = []
+        sequence_parts = []
+        identifier = None
+        
+        for i, row in enumerate(rows):
+            sequence_value = row.get(sequence_col, '').strip()
+            if not sequence_value:
+                continue  # Skip empty sequences
+            
+            if id_col and row.get(id_col):
+                identifier = row[id_col].strip()
+            else:
+                identifier = f"sequence_{i+1}" if len(rows) > 1 else (fieldnames[0] if fieldnames else "sequence")
+            
+            # Use first sequence only for now (can be extended to handle multiple)
+            if i == 0:
+                sequence_parts.append(sequence_value)
+                if identifier:
+                    fasta_lines.append(f">{identifier}")
+        
+        if not sequence_parts:
+            return None, f"No valid sequences found in '{sequence_col}' column"
+        
+        sequence = ''.join(sequence_parts).replace(' ', '').replace('\n', '').replace('\r', '')
+        
+        if not sequence:
+            return None, "Sequence is empty after processing"
+        
+        # Build FASTA content
+        fasta_content = f">{identifier or 'sequence'}\n{sequence}"
+        
+        return fasta_content, None
+        
+    except csv.Error as e:
+        return None, f"CSV/TSV parsing error: {str(e)}"
+    except Exception as e:
+        return None, f"Error processing CSV/TSV file: {str(e)}"
+
+
+def validate_csv_tsv(content: str, filename: str) -> Tuple[bool, Optional[str]]:
+    """
+    Validate CSV/TSV content and convert to FASTA.
+    
+    Args:
+        content: Raw CSV/TSV content
+        filename: Original filename
+        
+    Returns:
+        Tuple of (is_valid, error_message or fasta_content)
+    """
+    fasta_content, error = parse_csv_tsv(content, filename)
+    if error:
+        return False, error
+    
+    # Validate the resulting FASTA
+    is_valid, fasta_error = validate_fasta(fasta_content)
+    if not is_valid:
+        return False, f"CSV/TSV converted to FASTA but validation failed: {fasta_error}"
+    
+    return True, fasta_content
 

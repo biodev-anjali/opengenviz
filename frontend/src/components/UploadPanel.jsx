@@ -8,10 +8,17 @@ const UploadPanel = ({ onAnalysisComplete, onError, setLoading }) => {
   const fileInputRef = useRef(null)
 
   const handleFileSelect = (selectedFile) => {
-    if (selectedFile && (selectedFile.name.endsWith('.fasta') || selectedFile.name.endsWith('.fa') || selectedFile.name.endsWith('.fas'))) {
-      setFile(selectedFile)
-    } else {
-      onError('Please select a valid FASTA file (.fasta, .fa, or .fas)')
+    if (selectedFile) {
+      const fileName = selectedFile.name.toLowerCase()
+      const isFasta = fileName.endsWith('.fasta') || fileName.endsWith('.fa') || fileName.endsWith('.fas')
+      const isCsv = fileName.endsWith('.csv')
+      const isTsv = fileName.endsWith('.tsv')
+      
+      if (isFasta || isCsv || isTsv) {
+        setFile(selectedFile)
+      } else {
+        onError('Please select a valid file (.fasta, .fa, .fas, .csv, or .tsv). CSV/TSV files must have a "sequence" column.')
+      }
     }
   }
 
@@ -60,7 +67,10 @@ const UploadPanel = ({ onAnalysisComplete, onError, setLoading }) => {
 
   return (
     <div className="panel">
-      <h2 className="panel-title">Upload FASTA File</h2>
+      <h2 className="panel-title">Upload File</h2>
+      <p className="helper-text" style={{ marginBottom: '1rem', fontSize: '0.9rem', color: '#666' }}>
+        💡 Upload a FASTA, CSV, or TSV file. FASTA files must have sequence headers. CSV/TSV files must have a "sequence" column (and optional "id" or "name" column).
+      </p>
       
       <div
         className={`file-upload-area ${dragActive ? 'dragover' : ''}`}
@@ -73,11 +83,11 @@ const UploadPanel = ({ onAnalysisComplete, onError, setLoading }) => {
         <input
           ref={fileInputRef}
           type="file"
-          accept=".fasta,.fa,.fas"
+          accept=".fasta,.fa,.fas,.csv,.tsv"
           onChange={handleFileInputChange}
           style={{ display: 'none' }}
         />
-        <p>📁 Drag and drop a FASTA file here, or click to select</p>
+        <p>📁 Drag and drop a FASTA, CSV, or TSV file here, or click to select</p>
         {file && (
           <p className="file-selected">
             Selected: {file.name}
@@ -94,7 +104,7 @@ const UploadPanel = ({ onAnalysisComplete, onError, setLoading }) => {
       </button>
       {!file && (
         <p className="helper-text">
-          Select a FASTA file to enable analysis
+          Select a FASTA, CSV, or TSV file to enable analysis. CSV/TSV files require a "sequence" column.
         </p>
       )}
     </div>
