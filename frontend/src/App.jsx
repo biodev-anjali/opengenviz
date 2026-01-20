@@ -7,6 +7,7 @@ import HistoryPage from './pages/HistoryPage'
 import AboutPage from './pages/AboutPage'
 import PrivacyPage from './pages/PrivacyPage'
 import PricingPage from './pages/PricingPage'
+import ContactPage from './pages/ContactPage'
 import DocsPage from './components/DocsPage'
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
       <Route path="/about" element={<AboutPage />} />
       <Route path="/privacy" element={<PrivacyPage />} />
       <Route path="/pricing" element={<PricingPage />} />
+      <Route path="/contact" element={<ContactPage />} />
     </Routes>
   )
 }

@@ -16,6 +16,7 @@ const Navigation = () => {
     { path: '/history', label: 'History', icon: '📚' },
     { path: '/docs', label: 'Docs', icon: '📖' },
     { path: '/pricing', label: 'Pricing', icon: '💳' },
+    { path: '/contact', label: 'Contact', icon: '✉️' },
     { path: '/about', label: 'About', icon: 'ℹ️' },
     { path: '/privacy', label: 'Privacy', icon: '🔒' },
   ]
