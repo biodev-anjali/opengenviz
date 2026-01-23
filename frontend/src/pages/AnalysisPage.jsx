@@ -92,16 +92,32 @@ ATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCG`
 
       <div className="page-container">
         <div className="page-header">
-          <h2 className="page-title">Sequence Analysis</h2>
-          <p className="page-subtitle">
-            <strong>Who this is for:</strong> Bioinformatics and genomics researchers who need to analyze DNA, RNA, and protein sequences quickly without installing software or learning command-line tools.
+          <h2 className="page-title">Analyze Your DNA, RNA, and Protein Sequences</h2>
+          <p className="page-subtitle" style={{ fontSize: '1.1rem', lineHeight: '1.6' }}>
+            <strong>For biology research labs:</strong> No coding or complex software needed. Upload your sequence data and get instant visualizations and analysis reports.
           </p>
-          <p className="page-subtitle" style={{ marginTop: '0.75rem' }}>
-            <strong>What problem this solves:</strong> Raw sequence databases (NCBI, EMBL) only provide sequences. Analyzing them requires specialized software, command-line expertise, and manual data management. OpenGenViz delivers analysis-ready visualizations and insights directly in your browser.
+          <p className="page-subtitle" style={{ marginTop: '0.75rem', fontSize: '1rem' }}>
+            <strong>The problem we solve:</strong> Most sequence analysis tools require command-line skills or expensive software licenses. OpenGenViz runs in your web browser—upload your data and see results in seconds.
           </p>
-          <p className="page-subtitle" style={{ marginTop: '0.75rem' }}>
-            <strong>Value over raw databases:</strong> Instead of downloading sequences and processing them locally, get instant composition analysis, GC-content trends, mutation detection, and publication-ready visualizations—all automatically saved with full reproducibility for research workflows.
+          <p className="page-subtitle" style={{ marginTop: '0.75rem', fontSize: '1rem' }}>
+            <strong>How it helps:</strong> Get composition analysis, identify patterns, compare sequences, and export publication-ready charts—all without installing anything or learning technical commands.
           </p>
+          <div style={{ marginTop: '1.5rem', display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+            <a
+              href="/contact"
+              className="btn btn-primary"
+              style={{ padding: '0.75rem 1.5rem', fontSize: '1rem', fontWeight: 600, textDecoration: 'none' }}
+            >
+              Request a Demo
+            </a>
+            <a
+              href="/contact"
+              className="btn"
+              style={{ padding: '0.75rem 1.5rem', fontSize: '1rem', textDecoration: 'none' }}
+            >
+              Contact for Collaboration
+            </a>
+          </div>
         </div>
 
         <div className="analysis-layout">
@@ -140,23 +156,54 @@ ATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCG`
               <div className="panel">
                 <div className="empty-state">
                   <div className="empty-state-icon">🧬</div>
-                  <h3 className="empty-state-title">Get Started with Sequence Analysis</h3>
+                  <h3 className="empty-state-title">See How It Works—Try the Demo</h3>
                   <p className="empty-state-description">
-                    Upload a FASTA file, CSV/TSV dataset, or fetch sequences from NCBI/EMBL databases. 
-                    OpenGenViz automatically detects sequence types and performs comprehensive analysis with interactive visualizations.
+                    Click below to load a sample DNA sequence and see instant analysis results. No upload needed—just explore how OpenGenViz works.
                   </p>
-                  <div className="empty-state-steps">
+                  <button
+                    className="btn btn-primary"
+                    onClick={async () => {
+                      try {
+                        setLoading(true)
+                        const sampleFASTA = `>sample_dna_sequence
+ATGCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATGCGATCGATCGATCGATCGATCG
+ATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCG
+ATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCG
+ATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCG`
+                        const result = await api.analyzeSequence(sampleFASTA)
+                        setCurrentAnalysis(result)
+                        localStorage.setItem('opengenviz_has_visited', 'true')
+                        try {
+                          localStorage.setItem('opengenviz_current_analysis', JSON.stringify(result))
+                        } catch (e) {
+                          console.log('Could not save analysis to localStorage:', e)
+                        }
+                      } catch (error) {
+                        onError(error.userMessage || 'Error loading demo data')
+                      } finally {
+                        setLoading(false)
+                      }
+                    }}
+                    disabled={loading}
+                    style={{ marginTop: '1.5rem', fontSize: '1.1rem', padding: '0.875rem 2rem', fontWeight: 600 }}
+                  >
+                    🧪 Try Demo Now
+                  </button>
+                  <p className="helper-text" style={{ marginTop: '1rem', fontSize: '0.9rem', color: '#666' }}>
+                    Or upload your own sequence file below to analyze your research data.
+                  </p>
+                  <div className="empty-state-steps" style={{ marginTop: '2rem' }}>
                     <div className="step-item">
                       <span className="step-number">1</span>
-                      <span>Upload a FASTA, CSV, or TSV file, or fetch from databases</span>
+                      <span>Upload your sequence file (FASTA, CSV, or TSV format)</span>
                     </div>
                     <div className="step-item">
                       <span className="step-number">2</span>
-                      <span>Automatic analysis with interactive visualizations</span>
+                      <span>View automatic analysis with charts and statistics</span>
                     </div>
                     <div className="step-item">
                       <span className="step-number">3</span>
-                      <span>Export results, compare sequences, and access full history</span>
+                      <span>Export results for your research papers or presentations</span>
                     </div>
                   </div>
                 </div>

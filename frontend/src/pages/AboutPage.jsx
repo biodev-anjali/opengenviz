@@ -120,6 +120,18 @@ const AboutPage = () => {
               with complete transparency and reproducibility.
             </p>
 
+            <h2 className="docs-heading">Built by Researchers, for Researchers</h2>
+            <p>
+              OpenGenViz is developed by a team with backgrounds in biology, bioinformatics, and software engineering. 
+              We understand the challenges that small research labs face—limited IT support, tight budgets, and the need 
+              for tools that work without extensive training.
+            </p>
+            <p>
+              Our focus is on making sequence analysis accessible to biology researchers who want to focus on their science, 
+              not on learning complex software or command-line tools. We're building this product based on real feedback 
+              from early users in research labs.
+            </p>
+
             <div className="docs-warning" style={{ marginTop: '2rem' }}>
               <strong>Note:</strong> OpenGenViz is designed for research and educational purposes. 
               It is not intended for clinical diagnosis or medical decision-making.

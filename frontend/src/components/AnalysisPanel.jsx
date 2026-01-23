@@ -116,7 +116,10 @@ const AnalysisPanel = ({ analysis }) => {
       )}
 
       <div style={{ marginTop: '1.5rem' }}>
-        <h3 style={{ marginBottom: '1rem' }}>Nucleotide/Amino Acid Counts</h3>
+        <h3 style={{ marginBottom: '0.5rem' }}>Building Block Counts</h3>
+        <p className="helper-text" style={{ marginBottom: '1rem', fontSize: '0.9rem', color: '#666' }}>
+          This table shows exactly how many times each building block appears in your sequence and what percentage of the total it represents.
+        </p>
         <table className="table">
           <thead>
             <tr>

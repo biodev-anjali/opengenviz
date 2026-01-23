@@ -93,7 +93,10 @@ const VisualizationPanel = ({ analysis }) => {
               📥 Export PNG
             </button>
           </div>
-          <p className="chart-caption">Distribution of nucleotides (DNA/RNA) or amino acids (Protein) in the sequence</p>
+          <p className="chart-caption">
+            <strong>What this shows:</strong> This chart counts how many times each building block (A, T, G, C for DNA/RNA, or amino acids for proteins) appears in your sequence. 
+            Higher bars mean that building block is more common in your sequence.
+          </p>
           <div className="chart-container">
             <Bar
               ref={barChartRef}
@@ -147,7 +150,8 @@ const VisualizationPanel = ({ analysis }) => {
             </button>
           </div>
           <p className="chart-caption">
-            Composition ratio showing GC content versus AT (DNA) or AU (RNA) content
+            <strong>What this shows:</strong> This pie chart shows the balance between GC pairs (Guanine-Cytosine) and AT/AU pairs (Adenine-Thymine/Uracil) in your sequence. 
+            GC content is important because it affects how stable your DNA/RNA is and can indicate gene-rich regions.
           </p>
           <div className="chart-container chart-container-pie">
             <Pie
@@ -171,7 +175,11 @@ const VisualizationPanel = ({ analysis }) => {
               📥 Export PNG
             </button>
           </div>
-          <p className="chart-caption">GC content calculated across the sequence using a sliding window of 50 nucleotides</p>
+          <p className="chart-caption">
+            <strong>What this shows:</strong> This line chart shows how GC content changes along different parts of your sequence. 
+            The tool looks at small sections (50 building blocks at a time) and calculates GC% for each section. 
+            This helps identify regions with unusual composition patterns that might be important for your research.
+          </p>
           <div className="chart-container chart-container-large">
             <Line
               ref={lineChartRef}

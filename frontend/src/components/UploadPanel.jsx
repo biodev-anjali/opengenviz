@@ -67,9 +67,9 @@ const UploadPanel = ({ onAnalysisComplete, onError, setLoading }) => {
 
   return (
     <div className="panel">
-      <h2 className="panel-title">Upload File</h2>
+      <h2 className="panel-title">Upload Your Sequence File</h2>
       <p className="helper-text" style={{ marginBottom: '1rem', fontSize: '0.9rem', color: '#666' }}>
-        💡 Upload a FASTA, CSV, or TSV file. FASTA files must have sequence headers. CSV/TSV files must have a "sequence" column (and optional "id" or "name" column).
+        💡 Upload a FASTA, CSV, or TSV file with your sequence data. The tool will automatically detect the type and analyze it for you.
       </p>
       
       <div
