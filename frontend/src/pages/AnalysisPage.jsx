@@ -14,46 +14,32 @@ const AnalysisPage = () => {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
 
-  // Load saved state on mount and auto-load sample for first-time users
+  // Load saved state on mount - safely access localStorage (browser-only API)
+  // Landing page renders immediately, then saved state is restored if available
   useEffect(() => {
-    const hasVisited = localStorage.getItem('opengenviz_has_visited')
-    const savedAnalysis = localStorage.getItem('opengenviz_current_analysis')
-    
-    // Restore saved state if available
-    if (savedAnalysis) {
-      try {
-        const analysis = JSON.parse(savedAnalysis)
-        setCurrentAnalysis(analysis)
-        return // Don't load sample if we have saved state
-      } catch (e) {
-        console.log('Could not load saved analysis from localStorage:', e)
-      }
+    // Guard against SSR or missing window object
+    if (typeof window === 'undefined' || !window.localStorage) {
+      return
     }
-    
-    // Auto-load sample dataset for first-time users (only if no saved state)
-    if (!hasVisited && !savedAnalysis) {
-      // Sample DNA sequence with good variation for visualizations
-      const sampleFASTA = `>sample_dna_sequence
-ATGCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATGCGATCGATCGATCGATCGATCG
-ATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCG
-ATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCG
-ATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCG`
+
+    try {
+      const savedAnalysis = localStorage.getItem('opengenviz_current_analysis')
       
-      const loadSample = async () => {
+      // Restore saved state if available
+      if (savedAnalysis) {
         try {
-          setLoading(true)
-          const result = await api.analyzeSequence(sampleFASTA)
-          setCurrentAnalysis(result)
-          localStorage.setItem('opengenviz_has_visited', 'true')
-        } catch (error) {
-          // Silently fail - user can still use the app normally
-          console.log('Could not load sample dataset:', error.userMessage || error.message)
-        } finally {
-          setLoading(false)
+          const analysis = JSON.parse(savedAnalysis)
+          setCurrentAnalysis(analysis)
+          return // Don't auto-load sample if we have saved state
+        } catch (e) {
+          console.log('Could not load saved analysis from localStorage:', e)
         }
       }
       
-      loadSample()
+      // Note: Auto-load of sample is disabled - users click "Try Demo" button instead
+      // This ensures landing page always shows on first visit
+    } catch (e) {
+      console.log('Error accessing localStorage:', e)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []) // Run once on mount only
@@ -61,11 +47,13 @@ ATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCG`
   const handleAnalysisComplete = (analysis) => {
     setCurrentAnalysis(analysis)
     setError(null)
-    // Save to localStorage for persistence
-    try {
-      localStorage.setItem('opengenviz_current_analysis', JSON.stringify(analysis))
-    } catch (e) {
-      console.log('Could not save analysis to localStorage:', e)
+    // Save to localStorage for persistence (safe-guarded)
+    if (typeof window !== 'undefined' && window.localStorage) {
+      try {
+        localStorage.setItem('opengenviz_current_analysis', JSON.stringify(analysis))
+      } catch (e) {
+        console.log('Could not save analysis to localStorage:', e)
+      }
     }
     // Note: History is automatically updated on backend, will be visible in History page
   }
@@ -91,6 +79,7 @@ ATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCG`
       )}
 
       <div className="page-container">
+        {/* Loading state - show when actively loading data */}
         {loading && (
           <div style={{ textAlign: 'center', padding: '3rem 2rem' }}>
             <SkeletonLoader type="card" />
@@ -98,6 +87,8 @@ ATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCG`
           </div>
         )}
 
+        {/* Landing Page - Show when no analysis exists */}
+        {/* Show immediately on first render, then update if saved state is restored */}
         {!currentAnalysis && !loading && (
           <>
             {/* Hero Section */}
@@ -121,14 +112,17 @@ ATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCG
 ATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCG`
                       const result = await api.analyzeSequence(sampleFASTA)
                       setCurrentAnalysis(result)
-                      localStorage.setItem('opengenviz_has_visited', 'true')
-                      try {
-                        localStorage.setItem('opengenviz_current_analysis', JSON.stringify(result))
-                      } catch (e) {
-                        console.log('Could not save analysis to localStorage:', e)
+                      // Save to localStorage (safe-guarded)
+                      if (typeof window !== 'undefined' && window.localStorage) {
+                        try {
+                          localStorage.setItem('opengenviz_has_visited', 'true')
+                          localStorage.setItem('opengenviz_current_analysis', JSON.stringify(result))
+                        } catch (e) {
+                          console.log('Could not save to localStorage:', e)
+                        }
                       }
                     } catch (error) {
-                      onError(error.userMessage || 'Error loading demo data')
+                      handleError(error.userMessage || 'Error loading demo data')
                     } finally {
                       setLoading(false)
                     }
@@ -201,7 +195,7 @@ ATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCGATCG`
           </>
         )}
 
-        {/* Landing Page Content - Only show when no analysis */}
+        {/* Landing Page Content - Show when no analysis */}
         {!currentAnalysis && !loading && (
           <>
             {/* Upload Section */}
